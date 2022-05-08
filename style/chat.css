@@ -1,0 +1,125 @@
+/* main containers */
+#content{
+	display:flex;
+	width:100%;
+}
+#contacts,
+#polls{
+	margin-left:1em;
+	margin-right:1em;
+	display:flex;
+	flex-direction:column;
+}
+.elementbtn{
+	appearance:none;
+	padding:0.5em 0.5em;
+	--cbg:#333;
+	--cbgh:#555;
+	--ctxt:#CCC;
+	--ctxth:#FFF;
+}
+/* chat */
+#chatcard{
+	width:100%;
+	max-width:100%;
+	margin-bottom:0;
+	display:grid;
+	grid-template-columns:50% 50%;
+}
+#chatcard .elementbtn{
+	--cbg:#151515;
+	--cbgh:#000;
+	--ctxt:#CCC;
+	--ctxth:#FFF;
+}
+#chatlog{
+	display:flex;
+	flex-direction:column;
+	background-color:#151515;
+	width:100%;
+	max-width:100%;
+	overflow-y:auto;
+	grid-area:1/1/1/3;
+}
+#premsg>textarea{
+	width:calc(100% - 1em);
+	box-sizing:border-box;
+	resize:vertical;
+}
+#premsg>.in_head{
+	display:block;
+	width:calc(100% / 3 - 1em);
+}
+.post{
+	padding:1em;
+	background-color:#333;
+	border-radius:0.25em;
+	width:fit-content;
+	margin:0.25em;
+}
+.post.own{
+	border-bottom-right-radius:0;
+	align-self:flex-end;
+}
+.post.other{
+	border-bottom-left-radius:0;
+	align-self:flex-start;
+}
+.post .posttime{
+	color:#AAA;
+	border-top:solid 1px #888C;
+	text-align:right;
+	clear:both;
+}
+#preview>.post{
+	background-color:#151515;
+}
+.post>p{
+	white-space:pre-wrap;
+}
+.bpimgcontainer{
+	float:right;
+	max-width:calc(100% / 3);
+	min-width:10%;
+	background-color:#555;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	padding:0.5em 0.5em 0.25em 0.5em;
+	margin-bottom:0.25em;
+	border-radius:0.25em;
+}
+.bpimgcontainer>img{
+	max-width:100%;/* why do I have to set this? */
+}
+.bpimgcontainer>span{
+	margin-top:0.25em;
+}
+/* contact list */
+#contactform{
+	white-space:nowrap;
+	display:flex;
+	align-items:center;
+}
+#contactform>button{
+	--cbg: #FFF2;
+	--cbgh: #FFF4;
+	--ctxt: #CCC;
+	--ctxth: #FFF;
+}
+#contacts>label{
+	display:grid;
+	margin:0;
+	cursor:pointer;
+	margin:0.5em;
+}
+#contacts>label>button{
+	pointer-events:none;
+	margin:0;
+}
+#contacts>input:checked+label>button{
+	--cbg: #6AC;
+	--cbgh: #6AC;
+	--ctxt: #151515;
+	--ctxth: #151515;
+}

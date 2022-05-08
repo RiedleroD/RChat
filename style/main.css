@@ -1,0 +1,141 @@
+body{
+	background-color:#151515;
+	color:#CCC;
+	font-family:sans-serif;
+	margin:0;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+}
+nav{
+	position:sticky;
+	top:0;
+	left:0;
+	width:100%;
+	display:flex;
+	justify-content:center;
+	background-color:#333;
+	border-bottom:solid 1px #000;
+	margin-bottom:1em;
+}
+#logreg{
+	position:fixed;
+	right:0;
+}
+#logout_btn:hover{
+	color:#0000;
+}
+#logout_btn:hover:before{
+	content:"Logout";
+	color:var(--ctxth);
+	position:fixed;
+}
+
+a{
+	color:#418BA4;
+}
+a:hover,
+a:focus{
+	color:#6AC;
+	text-decoration:none;
+}
+
+.card{
+	max-width:90%;
+	min-width:50%;
+	padding:1em;
+	margin-bottom:1em;
+	border-radius:0.5em;
+	background-color:#333;
+}
+.cardheader{
+	display:flex;
+	justify-content:space-between;
+	align-items:baseline;
+	padding-bottom:0.25em;
+	border-bottom:solid 1px #555;
+	margin-bottom:0.5em;
+	margin-top:-0.25em;
+}
+
+/* buttons are mostly taken from darklearning */
+button,
+nav a{
+	--cbg:#FFF2;
+	--cbgh:#FFF4;
+	--ctxt:#CCC;
+	--ctxth:#FFF;
+	appearance:none;
+	display:inline-flex;
+	align-items:baseline;
+	justify-content:center;
+	padding:0.3em 0.75em;
+	margin:0.5em 0.5em;
+	text-decoration:none;
+	background-color:var(--cbg);
+	border:none;
+	color:var(--ctxt);
+	border-radius:0.25em;
+	font-weight:400;
+	cursor:pointer;
+}
+button:hover,
+nav a:hover,
+#contacts>label:hover>button{
+	background-color:var(--cbgh);
+	color:var(--ctxth);
+}
+button:focus,
+nav a:focus
+#contacts>label:focus>button{
+	background-color:var(--cbgh);
+	color:var(--ctxth);
+	box-shadow:0 0 1em var(--cbgh);
+}
+
+button[type="submit"]{
+	--cbg:#418BA4;
+	--cbgh:#6AC;
+	--ctxt:#151515;
+	--ctxth:#151515;
+	font-weight:bold;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="password"],
+textarea{
+	appearance:none;
+	border:solid 1px #888;
+	background-color:#151515;
+	color:#CCC;
+	border-radius:0.25em;
+	padding:0.3em 0.5em;
+	margin:0.3em 0.5em;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus{
+	outline:none;
+	border-color:#6AC;
+}
+
+textarea{
+	display:block;
+}
+
+@media(orientation: landscape){
+	.card{
+		width: 60%;
+	}
+}
+
+@media(orientation: portrait){
+	.card{
+		width: 90%;
+	}
+}
