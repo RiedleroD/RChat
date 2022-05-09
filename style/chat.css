@@ -76,6 +76,11 @@
 }
 .post>p{
 	white-space:pre-wrap;
+	margin:0 0 0.25em 0;
+}
+.post>h3{
+	margin-top:0;
+	margin-bottom:0.5em;
 }
 .bpimgcontainer{
 	float:right;
