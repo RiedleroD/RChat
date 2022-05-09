@@ -73,6 +73,7 @@
 }
 #preview>.post{
 	background-color:#151515;
+	float:right;
 }
 .post>p{
 	white-space:pre-wrap;
