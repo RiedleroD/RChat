@@ -22,7 +22,7 @@
 			readonly onfocus="this.removeAttribute('readonly');"/><!-- this is shitty, but it's the only way to stop browsers from autofilling this >:( -->
 		</form>
 	</div>
-	<div id="chatcard" class="card" style="display:none">
+	<div id="chatcard" class="card" style="visibility:hidden">
 		<div id="chatlog" class="card">
 			
 		</div>
@@ -51,5 +51,17 @@
 		</div>
 	</div>
 	<div id="polls">
+		<button type="button" onclick="document.getElementById('pollform').removeAttribute('style');this.setAttribute('style','display:none')">Neue Umfrage</button>
+		<form action="#" onsubmit="return false" autocomplete="off" id="pollform" style="visibility:hidden">
+			<input type="text" name="title" required placeholder="Titel"/>
+			<br/>
+			<input type="text" name="answer[0]" required placeholder="Antwort 1"/>
+			<button type="button" class="elementbtn" id="addpollanswerbtn">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 5" width="2em">
+					<path fill="currentColor" d="M0 2h2v-2h1v2h2v1h-2v2h-1v-2h-2z"/>
+				</svg>
+			</button>
+			<button type="submit" class="elementbtn" id="makepollbtn">Erstellen</button>
+		</form>
 	</div>
-<div>
+</div>

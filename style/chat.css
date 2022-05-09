@@ -127,3 +127,10 @@
 	--ctxt: #151515;
 	--ctxth: #151515;
 }
+/* poll sidebar */
+#polls input[type="text"]{
+	display:block;
+}
+#polls button{
+	vertical-align:middle;
+}

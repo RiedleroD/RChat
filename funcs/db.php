@@ -120,4 +120,12 @@
 		else
 			return $chat;
 	}
+	function db_new_poll($userid,$title,$answers){
+		$db = _db_connect();
+		$db->prepare("INSERT INTO polls VALUES (0,?,?)")->execute([$userid,$title]);
+		$pollid = (int)($db->lastInsertId());
+		foreach($answers as $answer){
+			$db->prepare("INSERT INTO panswers VALUES (0,?,?)")->execute([$pollid,$answer]);
+		}
+	}
 ?>

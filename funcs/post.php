@@ -69,5 +69,12 @@ if($_GET["s"]=="send"){
 		echo $user["id"];
 	else
 		echo "null";
+}else if($_GET["s"]=="newpoll"){
+	if(SESS::$isloggedin){
+		db_new_poll(SESS::$user["id"],$_POST["title"],$_POST["answer"]);
+	}else{
+		echo "not logged in";
+		 http_response_code(403);
+	}
 }
 ?>

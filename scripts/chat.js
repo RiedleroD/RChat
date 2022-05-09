@@ -4,6 +4,7 @@ var post_length = 0;
 var post_receiver = null;//TODO: check if any radio button is checked at page load; some browsers cache that between reloads
 var chat_cache_receiver = null;
 var chat_cache_since = 0;
+var poll_answercount = 1;
 
 //why do I have to create a basic fucking function like this?
 //this should be in the stdlib!
@@ -91,6 +92,35 @@ function on_new_image(ev,url="",alt=""){
 	add_form_data("element["+post_length+"][type]","img");
 }
 document.getElementById("new_i").onclick=on_new_image;
+
+function on_add_poll_answer(ev){
+	let pollform = document.getElementById("pollform");
+	let answer = pollform.children[2].cloneNode();
+	answer.value="";
+	answer.name="answer["+poll_answercount+']';
+	answer.placeholder="Antwort "+(poll_answercount+1);
+	pollform.insertBefore(answer,pollform.children[pollform.children.length-2]);
+	poll_answercount+=1;
+}
+document.getElementById("addpollanswerbtn").onclick=on_add_poll_answer;
+
+async function on_send_poll(ev){
+	let pollform = document.getElementById("pollform");
+	console.log(await doPOSTRequest("./funcs/post.php?s=newpoll",new FormData(pollform)));
+	pollform.setAttribute('style','visibility:hidden');
+	
+	let textinputs = document.querySelectorAll("#pollform>input[type='text']");
+	for(let i=textinputs.length-1;i>-1;i--){
+		if(i==0 || i==1){
+			textinputs[i].value="";
+		}else{
+			textinputs[i].remove();
+		}
+	}
+	document.getElementById("polls").children[0].removeAttribute('style');
+	poll_answercount=1;
+}
+document.getElementById("makepollbtn").onclick=on_send_poll;
 
 async function on_preview(ev){
 	let pw = document.getElementById("preview");
