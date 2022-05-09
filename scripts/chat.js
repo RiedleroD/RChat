@@ -5,6 +5,32 @@ var post_receiver = null;//TODO: check if any radio button is checked at page lo
 var chat_cache_receiver = null;
 var chat_cache_since = 0;
 
+//why do I have to create a basic fucking function like this?
+//this should be in the stdlib!
+function doPOSTRequest(url, data) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(xhr.response);
+            } else {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            }
+        };
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xhr.statusText
+            });
+        };
+        xhr.send(data);
+    });
+}
+
 function add_form_data(name,value){
 	let ip = document.createElement("input");
 	ip.name=name;
@@ -66,47 +92,40 @@ function on_new_image(ev,url="",alt=""){
 }
 document.getElementById("new_i").onclick=on_new_image;
 
-function on_preview(ev){
-	xhr = new XMLHttpRequest();
-	xhr.open("POST","./funcs/post.php?s=preview",false);
-	xhr.send(new FormData(document.getElementById("mainform")));
+async function on_preview(ev){
 	let pw = document.getElementById("preview");
-	pw.innerHTML = xhr.responseText;
+	pw.innerHTML = await doPOSTRequest("./funcs/post.php?s=preview",new FormData(document.getElementById("mainform")));
 }
 document.getElementById("previewbtn").onclick=on_preview;
 
-function on_sendmsg(ev){
+async function on_sendmsg(ev){
 	let data = new FormData(document.getElementById("mainform"));
 	data.append("receiver",post_receiver);
-	xhr = new XMLHttpRequest();
-	xhr.open("POST","./funcs/post.php?s=send",false);
-	xhr.send(data);
-	if(xhr.responseText!=""){
+	let response = await doPOSTRequest("./funcs/post.php?s=send",data);
+	if(response!=""){
 		console.log("nonempty sendmsg xhr response:");
-		console.log(xhr.responseText);
+		console.log(response);
 	}
 	document.getElementById("premsg").innerHTML="";
 	document.getElementById("preview").innerHTML="";
 }
 document.getElementById("sendbtn").onclick=on_sendmsg;
 
-function on_addcontact(ev){
-	xhr = new XMLHttpRequest();
-	xhr.open("POST","./funcs/post.php?s=contact",false);
-	xhr.send(new FormData(document.getElementById("contactform")));
-	if(xhr.responseText=="null"){
+async function on_addcontact(ev){
+	let response = await doPOSTRequest("./funcs/post.php?s=contact",new FormData(document.getElementById("contactform")));
+	if(response=="null"){
 		//contact doesn't exist
 	}else{
-		let usrid = Number(xhr.responseText);
+		let usrid = Number(response);
 		if(isNaN(usrid)){
 			console.log("unknown addcontact xhr response:");
-			console.log(xhr.responseText);
+			console.log(response);
 		}else{
 			let c = document.getElementById("contacts");
 			let cbtn = document.createElement("button");
 			cbtn.type="button";
 			cbtn.innerText=document.getElementById("contactin").value;
-			cbtn.onclick = () => post_receiver=Number(xhr.responseText);
+			cbtn.onclick = () => post_receiver=Number(response);
 			c.prepend(cbtn);
 		}
 	}
@@ -114,8 +133,7 @@ function on_addcontact(ev){
 }
 document.getElementById("newcontactbtn").onclick=on_addcontact;
 
-function reload_chat_loop(){
-	xhr = new XMLHttpRequest();
+async function reload_chat_loop(){
 	if(post_receiver!=chat_cache_receiver){//changed chat
 		chat_cache_receiver=post_receiver
 		chat_cache_since = 0;
@@ -126,25 +144,21 @@ function reload_chat_loop(){
 		let data = new FormData();
 		data.append("receiver",post_receiver);
 		data.append("lastknownmessage",chat_cache_since);
-		xhr.open("POST","./funcs/post.php?s=fetch",false);
-		xhr.send(data);
+		response = await doPOSTRequest("./funcs/post.php?s=fetch",data);
 		let toAppend=[];//post IDs to be appended
 		try{
-			toAppend=JSON.parse(xhr.responseText);
+			toAppend=JSON.parse(response);
 		}catch(error){
 			console.log("error in chat load: ");
-			console.log(xhr.responseText);
+			console.log(response);
 		}
 		if(toAppend.at(-1)>chat_cache_since)
 			chat_cache_since = toAppend.at(-1);
 		for(let msgid of toAppend){
-			xhr = new XMLHttpRequest();
-			xhr.open("POST","./funcs/post.php?s=genmsg",false);
 			let data = new FormData();
 			data.append("msgid",msgid);
-			xhr.send(data);
 			let chat = document.getElementById("chatlog");
-			chat.innerHTML += xhr.responseText;
+			chat.innerHTML += await doPOSTRequest("./funcs/post.php?s=genmsg",data);
 		}
 	}
 	setTimeout(reload_chat_loop,500);//non-blocking, waits half a second before calling again
