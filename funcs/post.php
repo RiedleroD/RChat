@@ -38,7 +38,7 @@ function genMessage($datetime,$content,$side){
 				echo "<p>Unrecognized content type: ${stuff['type']}</p>";
 		}
 	}
-	echo "<div class='posttime'><span>$datetime</span></div>";
+	echo "<div class='cardfooter posttime'><span>$datetime</span></div>";
 	echo "</div>";
 }
 if($_GET["s"]=="send"){

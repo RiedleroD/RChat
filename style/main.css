@@ -58,6 +58,15 @@ a:focus{
 	margin-bottom:0.5em;
 	margin-top:-0.25em;
 }
+.cardfooter{
+	display:flex;
+	justify-content:space-between;
+	align-items:baseline;
+	border-top:solid 1px #555;
+	margin-top:0.5em;
+	margin-bottom:-0.25em;
+	clear:both;
+}
 
 /* buttons are mostly taken from darklearning */
 button,

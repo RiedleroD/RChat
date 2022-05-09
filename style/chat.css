@@ -67,9 +67,7 @@
 }
 .post .posttime{
 	color:#AAA;
-	border-top:solid 1px #888C;
 	text-align:right;
-	clear:both;
 }
 #preview>.post{
 	background-color:#151515;
