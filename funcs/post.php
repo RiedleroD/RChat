@@ -5,12 +5,15 @@ session_start();
 genSessionContext();
 function genMessage($datetime,$content,$side){
 	switch($side){
-		case null:
-			$side="";
 		case false:
 			$side=" other";
+			break;
 		case true:
 			$side=" own";
+			break;
+		case 3:
+			$side="";
+			break;
 	}
 	echo "<div class='post$side'>";
 	foreach($content as $stuff){
@@ -45,7 +48,7 @@ if($_GET["s"]=="send"){
 		echo "not logged in";
 	}
 }else if($_GET["s"]=="preview"){
-	genMessage("now",$_POST["element"],null);
+	genMessage("now",$_POST["element"],3);
 }else if($_GET["s"]=="genmsg"){
 	$msg = db_get_msg($_POST["msgid"]);
 	genMessage($msg["date"],$msg["elements"],$msg["author"]==SESS::$user["id"]);
