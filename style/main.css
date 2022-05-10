@@ -22,6 +22,7 @@ nav{
 #logreg{
 	position:fixed;
 	right:0;
+	top:0;
 }
 #logout_btn:hover{
 	color:#0000;
