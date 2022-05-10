@@ -43,7 +43,11 @@ function genMessage($datetime,$content,$side){
 }
 if($_GET["s"]=="send"){
 	if(SESS::$isloggedin){
-		db_add_msg(SESS::$user["id"],$_POST["receiver"],$_POST["element"]);
+		if($_POST["element"]){
+			db_add_msg(SESS::$user["id"],$_POST["receiver"],$_POST["element"]);
+		}else{
+			echo "empty messages are not allowed";
+		}
 	}else{
 		echo "not logged in";
 	}
