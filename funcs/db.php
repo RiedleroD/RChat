@@ -122,7 +122,7 @@
 	}
 	function db_get_chat_since($author,$receiver,$lastknownmsg){
 		$db = _db_connect();
-		$chat = _db_get_pq($db,"SELECT DISTINCT id FROM posts WHERE id>? AND ((receiver=? AND author=?) OR (receiver=? AND author=?))",[$lastknownmsg,$receiver,$author,$author,$receiver])->fetchAll();
+		$chat = _db_get_pq($db,"SELECT DISTINCT id FROM posts WHERE id>? AND ((receiver=? AND author=?) OR (receiver=? AND author=?)) ORDER BY id",[$lastknownmsg,$receiver,$author,$author,$receiver])->fetchAll();
 		if($chat==null)
 			return array();
 		else
