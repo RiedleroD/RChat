@@ -1,10 +1,17 @@
 var accountid = Number(document.getElementById("logout_btn").dataset.userid);
 var post_stuff = document.getElementById("premsg");
 var post_length = 0;
-var post_receiver = null;//TODO: check if any radio button is checked at page load; some browsers cache that between reloads
+var post_receiver = null;
 var chat_cache_receiver = null;
 var chat_cache_since = 0;
 var poll_answercount = 1;
+
+for(let contact of document.querySelectorAll("#contacts>input[type='radio']")){
+	if(contact.checked){
+		post_receiver=Number(contact.id.slice(7));
+		break;
+	}
+}
 
 //why do I have to create a basic fucking function like this?
 //this should be in the stdlib!
