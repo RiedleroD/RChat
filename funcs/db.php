@@ -50,6 +50,7 @@
 		foreach($row=$db->query("SELECT id,type FROM elements WHERE post=$id ORDER BY element ASC") as $row){
 			$eid=(int)($row["id"]);
 			$data = array();
+			$data["id"]=$eid;
 			switch((int)($row["type"])){
 				case 0:
 					$data["type"]="txt";
@@ -68,7 +69,6 @@
 				case 3:
 					$data["type"]="poll";
 					$data["pollid"]=(int)(_db_get_pq($db,"SELECT pollid FROM psends WHERE id=?",[$eid])->fetch()["pollid"]);
-					$data["namenr"]=$eid;
 					$data["title"]=_db_get_pq($db,"SELECT title FROM polls WHERE id=?",[$data["pollid"]])->fetch()["title"];
 					$data["answers"]=array();
 					foreach(_db_get_pq($db,"SELECT id,answer FROM panswers WHERE poll=?",[$data["pollid"]])->fetchAll() as $poll){
@@ -144,5 +144,14 @@
 			$result[(int)($value["id"])]=$value["title"];
 		}
 		return $result;
+	}
+	function db_get_vote($userid,$pollid){
+		$db = _db_connect();
+		return _db_get_pq($db,"SELECT answer FROM presponses WHERE poll=? AND user=?",[$pollid,$userid])->fetch()["answer"];
+	}
+	function db_cast_vote($userid,$pollid,$answer){
+		$db = _db_connect();
+		$db->prepare("DELETE FROM presponses WHERE poll=? AND user=?")->execute([$pollid,$userid]);
+		$db->prepare("INSERT INTO presponses VALUES (?,?,?)")->execute([$pollid,$userid,$answer]);
 	}
 ?>

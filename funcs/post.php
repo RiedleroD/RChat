@@ -35,11 +35,14 @@ function genMessage($datetime,$content,$side){
 				echo "' alt='$alt'><span>$alt</span></div>";
 				break;
 			case "poll":
-				//TODO: check if person has voted
+				$vote=db_get_vote(SESS::$user["id"],$stuff['pollid']);
 				echo "<h4>${stuff['title']}</h4>";
 				foreach($stuff['answers'] as $aid=>$atext){
-					echo "<input type='radio' name='${stuff['namenr']}poll${stuff['id']}' id='${stuff['namenr']}poll${stuff['id']}_$aid'/>";
-					echo "<label class='polllabel' for='${stuff['namenr']}poll${stuff['id']}_$aid'>$atext</label>";
+					echo "<input type='radio' name='${stuff['id']}poll${stuff['pollid']}' id='${stuff['id']}poll${stuff['pollid']}_$aid'";
+					if($aid==$vote){
+						echo " checked";
+					}
+					echo "/><label onclick='on_select_panswer(this)' class='polllabel' for='${stuff['id']}poll${stuff['pollid']}_$aid'>$atext</label>";
 				}
 				break;
 			default:
@@ -104,6 +107,13 @@ if($_GET["s"]=="send"){
 			echo '"';
 		}
 		echo '}';
+	}else{
+		echo "not logged in";
+		http_response_code(403);
+	}
+}else if($_GET["s"]=="vote"){
+	if(SESS::$isloggedin){
+		db_cast_vote(SESS::$user["id"],$_POST["pollid"],$_POST["answer"]);
 	}else{
 		echo "not logged in";
 		http_response_code(403);

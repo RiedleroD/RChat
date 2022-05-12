@@ -243,3 +243,20 @@ async function reload_chat_loop(){
 	setTimeout(reload_chat_loop,500);//non-blocking, waits half a second before calling again
 }
 setTimeout(reload_chat_loop,500);
+
+async function on_select_panswer(label){
+	let _f=label.getAttribute("for").split(/(poll|_)/);
+	let eid = _f[0];
+	let pid = _f[2];
+	let aid = _f[4];
+	for(let other of document.getElementById("chatlog").getElementsByTagName('input')){
+		let f2 = other.getAttribute("id").split(/(poll|_)/);
+		if(pid==f2[2] && aid==f2[4]){
+			other.checked=true;
+		}
+	}
+	let data = new FormData();
+	data.append("pollid",pid);
+	data.append("answer",aid);
+	await doPOSTRequest("./funcs/post.php?s=vote",data);
+}
