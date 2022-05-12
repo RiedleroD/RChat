@@ -130,6 +130,7 @@ body{
 .polllabel{
 	display:block;
 	cursor:pointer;
+	width:fit-content;
 }
 .polllabel::before{
 	content: "";
