@@ -148,21 +148,27 @@ async function on_send_poll(ev){
 document.getElementById("makepollbtn").onclick=on_send_poll;
 
 async function on_preview(ev){
-	let pw = document.getElementById("preview");
-	pw.innerHTML = await doPOSTRequest("./funcs/post.php?s=preview",new FormData(document.getElementById("mainform")));
+	let mf = document.getElementById("mainform");
+	if(mf.checkValidity()){
+		let pw = document.getElementById("preview");
+		pw.innerHTML = await doPOSTRequest("./funcs/post.php?s=preview",new FormData(mf));
+	}
 }
 document.getElementById("previewbtn").onclick=on_preview;
 
 async function on_sendmsg(ev){
-	let data = new FormData(document.getElementById("mainform"));
-	data.append("receiver",post_receiver);
-	let response = await doPOSTRequest("./funcs/post.php?s=send",data);
-	if(response!=""){
-		console.log("nonempty sendmsg xhr response:");
-		console.log(response);
+	let mf = document.getElementById("mainform");
+	if(mf.checkValidity()){
+		let data = new FormData(mf);
+		data.append("receiver",post_receiver);
+		let response = await doPOSTRequest("./funcs/post.php?s=send",data);
+		if(response!=""){
+			console.log("nonempty sendmsg xhr response:");
+			console.log(response);
+		}
+		document.getElementById("premsg").innerHTML="";
+		document.getElementById("preview").innerHTML="";
 	}
-	document.getElementById("premsg").innerHTML="";
-	document.getElementById("preview").innerHTML="";
 }
 document.getElementById("sendbtn").onclick=on_sendmsg;
 
