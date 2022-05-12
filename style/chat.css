@@ -107,7 +107,6 @@ body{
 }
 .bpimgcontainer{
 	float:right;
-	max-width:calc(100% / 3);
 	min-width:10%;
 	background-color:#555;
 	display:flex;
@@ -117,8 +116,19 @@ body{
 	margin-bottom:0.25em;
 	border-radius:0.25em;
 }
+@media(orientation: landscape){
+	.bpimgcontainer{
+		max-width: 20vw;
+	}
+}
+@media(orientation: portrait){
+	.bpimgcontainer{
+		max-width: 50vw;
+	}
+}
 .bpimgcontainer>img{
 	max-width:100%;/* why do I have to set this? */
+	min-width:100%;
 }
 .bpimgcontainer>span{
 	margin-top:0.25em;
