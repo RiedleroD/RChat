@@ -192,11 +192,20 @@ async function on_addcontact(ev){
 			console.log(response);
 		}else{
 			let c = document.getElementById("contacts");
+			let clbl = document.createElement("label");
+			clbl.setAttribute("for","contact"+usrid);
+			clbl.onclick = ()=>post_receiver=Number(response);
 			let cbtn = document.createElement("button");
 			cbtn.type="button";
 			cbtn.innerText=document.getElementById("contactin").value;
-			cbtn.onclick = () => post_receiver=Number(response);
-			c.prepend(cbtn);
+			clbl.appendChild(cbtn);
+			let cip = document.createElement("input");
+			cip.id="contact"+usrid;
+			cip.type="radio";
+			cip.name="contacts";
+			cip.setAttribute("hidden","");
+			c.prepend(clbl);
+			c.prepend(cip);
 		}
 	}
 	document.getElementById("contactin").value="";
