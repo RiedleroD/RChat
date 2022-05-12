@@ -131,19 +131,21 @@ document.getElementById("addpollanswerbtn").onclick=on_add_poll_answer;
 
 async function on_send_poll(ev){
 	let pollform = document.getElementById("pollform");
-	console.log(await doPOSTRequest("./funcs/post.php?s=newpoll",new FormData(pollform)));
-	pollform.setAttribute('style','visibility:hidden');
-	
-	let textinputs = document.querySelectorAll("#pollform>input[type='text']");
-	for(let i=textinputs.length-1;i>-1;i--){
-		if(i==0 || i==1){
-			textinputs[i].value="";
-		}else{
-			textinputs[i].remove();
+	if(pollform.checkValidity()){
+		console.log(await doPOSTRequest("./funcs/post.php?s=newpoll",new FormData(pollform)));
+		pollform.setAttribute('style','visibility:hidden');
+		
+		let textinputs = document.querySelectorAll("#pollform>input[type='text']");
+		for(let i=textinputs.length-1;i>-1;i--){
+			if(i==0 || i==1){
+				textinputs[i].value="";
+			}else{
+				textinputs[i].remove();
+			}
 		}
+		document.getElementById("polls").children[0].removeAttribute('style');
+		poll_answercount=1;
 	}
-	document.getElementById("polls").children[0].removeAttribute('style');
-	poll_answercount=1;
 }
 document.getElementById("makepollbtn").onclick=on_send_poll;
 
