@@ -34,6 +34,14 @@ function genMessage($datetime,$content,$side){
 				echo htmlentities($stuff['src']);
 				echo "' alt='$alt'><span>$alt</span></div>";
 				break;
+			case "poll":
+				//TODO: check if person has voted
+				echo "<h4>${stuff['title']}</h4>";
+				foreach($stuff['answers'] as $aid=>$atext){
+					echo "<input type='radio' name='${stuff['namenr']}poll${stuff['id']}' id='${stuff['namenr']}poll${stuff['id']}_$aid'/>";
+					echo "<label class='polllabel' for='${stuff['namenr']}poll${stuff['id']}_$aid'>$atext</label>";
+				}
+				break;
 			default:
 				echo "<p>Unrecognized content type: ${stuff['type']}</p>";
 		}
@@ -79,6 +87,26 @@ if($_GET["s"]=="send"){
 	}else{
 		echo "not logged in";
 		 http_response_code(403);
+	}
+}else if($_GET["s"]=="getpolls"){
+	if(SESS::$isloggedin){
+		$notfirst=false;
+		echo '{';
+		foreach(db_get_users_polls(SESS::$user["id"]) as $pollid=>$title){
+			if($notfirst)
+				echo ',';
+			else
+				$notfirst=true;
+			echo '"';
+			echo $pollid;
+			echo '":"';
+			echo addslashes($title);
+			echo '"';
+		}
+		echo '}';
+	}else{
+		echo "not logged in";
+		http_response_code(403);
 	}
 }
 ?>

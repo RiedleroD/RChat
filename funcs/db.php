@@ -33,7 +33,7 @@
 					$db->prepare("INSERT INTO images VALUES (?,?,?)")->execute([$x,$stuff['src'],$stuff['alt']]);
 					break;
 				case "poll":
-					$db->prepare("INSERT INTO pollsends VALUES (?,?)")->execute([$x,$stuff['poll']]);
+					$db->prepare("INSERT INTO psends VALUES (?,?)")->execute([$x,$stuff['pollid']]);
 					break;
 			}
 			$j+=1;
@@ -49,28 +49,36 @@
 		$elements = array();
 		foreach($row=$db->query("SELECT id,type FROM elements WHERE post=$id ORDER BY element ASC") as $row){
 			$eid=(int)($row["id"]);
+			$data = array();
 			switch((int)($row["type"])){
 				case 0:
-					$text = _db_get_pq($db,"SELECT text FROM paragraphs WHERE id=?",[$eid])->fetch()["text"];
+					$data["type"]="txt";
+					$data["txt"] = _db_get_pq($db,"SELECT text FROM paragraphs WHERE id=?",[$eid])->fetch()["text"];
 					break;
 				case 1:
-					$text = _db_get_pq($db,"SELECT text FROM headings WHERE id=?",[$eid])->fetch()["text"];
+					$data["type"]="h";
+					$data["txt"] = _db_get_pq($db,"SELECT text FROM headings WHERE id=?",[$eid])->fetch()["text"];
 					break;
 				case 2:
-					$data = _db_get_pq($db,"SELECT src,alt FROM images WHERE id=?",[$eid])->fetch();
-					$src = $data["src"];
-					$alt = $data["alt"];
+					$data["type"]="img";
+					$img = _db_get_pq($db,"SELECT src,alt FROM images WHERE id=?",[$eid])->fetch();
+					$data["src"] = $img["src"];
+					$data["alt"] = $img["alt"];
+					break;
+				case 3:
+					$data["type"]="poll";
+					$data["pollid"]=(int)(_db_get_pq($db,"SELECT pollid FROM psends WHERE id=?",[$eid])->fetch()["pollid"]);
+					$data["namenr"]=$eid;
+					$data["title"]=_db_get_pq($db,"SELECT title FROM polls WHERE id=?",[$data["pollid"]])->fetch()["title"];
+					$data["answers"]=array();
+					foreach(_db_get_pq($db,"SELECT id,answer FROM panswers WHERE poll=?",[$data["pollid"]])->fetchAll() as $poll){
+						$data["answers"][(int)($poll["id"])]=$poll["answer"];
+					}
 					break;
 				default:
 					continue 2;//continues in the second level, skipping the switch and going to the foreach
-				//TODO: polls
 			}
-			array_push($elements,array(
-				"type"=>array("txt","h","img")[(int)($row["type"])],
-				"txt"=>$text,
-				"src"=>$src,
-				"alt"=>$alt
-			));
+			array_push($elements,$data);
 		}
 		return $elements;
 	}
@@ -127,5 +135,14 @@
 		foreach($answers as $answer){
 			$db->prepare("INSERT INTO panswers VALUES (0,?,?)")->execute([$pollid,$answer]);
 		}
+	}
+	function db_get_users_polls($userid){
+		$db = _db_connect();
+		$result = array();
+		$values = _db_get_pq($db,"SELECT id,title FROM polls WHERE author=?",[$userid])->fetchAll();
+		foreach($values as $value){
+			$result[(int)($value["id"])]=$value["title"];
+		}
+		return $result;
 	}
 ?>

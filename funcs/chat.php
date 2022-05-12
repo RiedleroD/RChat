@@ -43,6 +43,11 @@
 					<path fill="currentColor" d="M0 4.5l2-3 2 3zm4-4a1 1 0 000 2 1 1 0 000-2z"/>
 				</svg>
 			</button>
+			<button class="elementbtn" type="button" id="new_poll">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="2em">
+					<path fill="currentColor" d="M4 2a2 2 0 010 4 2 2 0 010-4zm0 1a1 1 0 000 2 1 1 0 000-2zm3 0v2h11v-2zm-3 4a2 2 0 010 4 2 2 0 010-4zm0 1a1 1 0 000 2 1 1 0 000-2zm3 0v2h14v-2zm-3 4a2 2 0 010 4 2 2 0 010-4zm3 1v2h13v-2zm-3 4a2 2 0 010 4 2 2 0 010-4zm0 1a1 1 0 000 2 1 1 0 000-2zm3 0v2h15v-2z"/>
+				</svg>
+			</button>
 			<br/>
 			<button type="submit" id="sendbtn">Senden</button>
 			<button type="submit" id="previewbtn">Vorschau</button>

@@ -93,6 +93,31 @@ function on_new_image(ev,url="",alt=""){
 }
 document.getElementById("new_i").onclick=on_new_image;
 
+async function on_new_poll(ev,url="",alt=""){
+	post_length+=1;
+	let ip = document.createElement("select");
+	ip.required=true;
+	ip.classList.add("in_poll");
+	ip.name="element["+post_length+"][pollid]";
+	let placeholder = document.createElement("option");
+	placeholder.value="";
+	placeholder.setAttribute("hidden","");
+	placeholder.setAttribute("disabled","");
+	placeholder.setAttribute("selected","");
+	placeholder.innerHTML="Select a Poll";
+	ip.appendChild(placeholder);
+	let polls = JSON.parse(await doPOSTRequest("./funcs/post.php?s=getpolls"));
+	for(const [id,title] of Object.entries(polls)){
+		let pe = document.createElement("option");
+		pe.value=id;
+		pe.innerHTML=title;
+		ip.appendChild(pe);
+	}
+	post_stuff.appendChild(ip);
+	add_form_data("element["+post_length+"][type]","poll");
+}
+document.getElementById("new_poll").onclick=on_new_poll;
+
 function on_add_poll_answer(ev){
 	let pollform = document.getElementById("pollform");
 	let answer = pollform.children[2].cloneNode();
@@ -188,7 +213,16 @@ async function reload_chat_loop(){
 			let data = new FormData();
 			data.append("msgid",msgid);
 			let chat = document.getElementById("chatlog");
-			chat.innerHTML += await doPOSTRequest("./funcs/post.php?s=genmsg",data);
+			let response=new DOMParser().parseFromString(
+					await doPOSTRequest("./funcs/post.php?s=genmsg",data),
+					'text/html').body;
+			if(response.children.length==1)
+				chat.appendChild(response.children[0]);
+			else{
+				console.log("invalid message response:");
+				console.log(response.outerHTML);
+			}
+			chat.scrollTo(0,chat.scrollHeight);
 		}
 	}
 	setTimeout(reload_chat_loop,500);//non-blocking, waits half a second before calling again
