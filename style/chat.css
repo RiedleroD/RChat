@@ -8,6 +8,17 @@ body{
 	overflow-y:hidden;
 	margin-bottom:1em;
 }
+@media(orientation: landscape){
+	#content{
+		flex-direction:row;
+	}
+}
+@media(orientation: portrait){
+	#content{
+		flex-direction:column;
+		overflow-y:auto;
+	}
+}
 #contacts,
 #polls{
 	margin-left:1em;
