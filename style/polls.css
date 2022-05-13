@@ -1,0 +1,37 @@
+@media(orientation: landscape){
+	body{
+		display:block;
+	}
+	.card{
+		float:left;
+		width:auto;
+		min-width:10%;
+		max-width:30%;
+		margin:1em;
+	}
+	svg{
+		width:auto;
+		max-height:50vh;
+		max-width:50vw;
+	}
+}
+@media(orientation: portrait){
+	.card{
+		width:100%;
+		margin:1em;
+		margin-bottom:0;
+	}
+	svg{
+		max-width:100%;
+		width:100%;
+	}
+}
+svg text{
+	fill:#CCC;
+	mix-blend-mode:color-dodge;
+	font-size:1px;
+	dominant-baseline:central;
+}
+svg tspan{
+	text-anchor:end;
+}

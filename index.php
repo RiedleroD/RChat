@@ -22,6 +22,9 @@
 			case "loggedin":
 			case "registered":
 				break;
+			case "polls":
+				echo "<link rel='stylesheet' href='./style/polls.css'/>";
+				break;
 			default:
 				echo "<script async src='./scripts/chat.js'></script>";
 				echo "<link rel='stylesheet' href='./style/chat.css'/>";
@@ -41,6 +44,9 @@
 				case "loggedin":
 				case "registered":
 					sesspool_followup($sess_mode);//pass 3 - warns & pseudo-redirects
+					break;
+				case "polls":
+					include "./funcs/polls.php";
 					break;
 				default:
 					include "./funcs/chat.php";

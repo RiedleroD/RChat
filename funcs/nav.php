@@ -1,6 +1,6 @@
 <nav>
 	<a href="./">Hauptseite</a>
-	<a href="./">Umfragen</a>
+	<a href="./?s=polls">Umfragen</a>
 	<span id="logreg">
 		<?php
 			include_once("db.php");

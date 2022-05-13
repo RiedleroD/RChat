@@ -145,6 +145,26 @@
 		}
 		return $result;
 	}
+	function db_get_users_polls_full($userid){
+		$db = _db_connect();
+		$result=array();
+		$values = _db_get_pq($db,"SELECT id,title FROM polls WHERE author=? ORDER BY id",[$userid])->fetchAll();
+		$valuecount = count($values);
+		foreach($values as $value){
+			$i=(int)($value["id"]);
+			$result[$i]["title"]=$value["title"];
+			$result[$i]["answers"]=array();
+			$answers=_db_get_pq($db,"SELECT id,answer from panswers WHERE poll=? ORDER BY id",[$i])->fetchAll();
+			foreach($answers as $answer){
+				$aid = (int)($answer["id"]);
+				$result[$i]["answers"][$aid]=array();
+				$result[$i]["answers"][$aid]["answer"]=$answer["answer"];
+				$votecount=_db_get_pq($db,"SELECT COUNT(user) FROM presponses WHERE answer=?",[$aid])->fetch()[0];
+				$result[$i]["answers"][$aid]["votes"]=(int)($votecount);
+			}
+		}
+		return $result;
+	}
 	function db_get_vote($userid,$pollid){
 		$db = _db_connect();
 		return _db_get_pq($db,"SELECT answer FROM presponses WHERE poll=? AND user=?",[$pollid,$userid])->fetch()["answer"];
