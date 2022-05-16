@@ -14,8 +14,8 @@
 		?>
 		<form action="#" onsubmit="return false" autocomplete="off" id="contactform">
 			<button type="submit" class="elementbtn" id="newcontactbtn">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 5" width="2em">
-					<path fill="currentColor" d="M0 2h2v-2h1v2h2v1h-2v2h-1v-2h-2z"/>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -1 16 16" width="2em">
+					<path fill="currentColor" d="M6 9.5h3v3h6.5A6.5 6.5 0 006 6.73zM9 5a1 1 0 000-6 1 1 0 000 6zM.5 10h3v-3h2v3h3v2h-3v3h-2v-3h-3z"/>
 				</svg>
 			</button>
 			<input type="text" name="name" required placeholder="Username" id="contactin"
